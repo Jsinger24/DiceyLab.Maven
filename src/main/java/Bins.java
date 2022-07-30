@@ -1,9 +1,19 @@
-
+import java.util.ArrayList;
+import java.util.Collections;
 public class Bins {
-    int[] bin = new int[13];
+    private ArrayList<Integer> results;
 
-    public int get(int i){
-        return 0;
+    public Bins (int maxBinNum) {
+        results = new ArrayList<Integer>(Collections.nCopies(maxBinNum + 1, 0));
+    }
+    public Integer getBin(int binNum) {
+        return this.results.get(binNum);
+    }
+    public void addToBin(int binNum) {
+        results.set(binNum, results.get(binNum) +1);
+    }
+    public int size() {
+        return results.size();
     }
 
 }

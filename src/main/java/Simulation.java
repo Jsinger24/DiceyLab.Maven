@@ -1,35 +1,55 @@
 public class Simulation {
 
-    private static int numOfDice = 2;
-    private static int numOfTosses = 1000000;
-    private static double percentage;
-    private static double stars;
+    int dice;
+    int tosses;
+    private StringBuilder results;
+    public Simulation(int numberOfDice, int numberOfTosses) {
+        this.dice = numberOfDice;
+        this.tosses = numberOfTosses;
+        this.results = new StringBuilder();
+    }
+    public int getNumberOfDice() {
+        return dice;
+    }
+    public void setDice(int numberOfDice) {
+        this.dice = numberOfDice;
+    }
+    public int getNumberOfTosses() {
+        return tosses;
+    }
+    public void setTosses(int numberOfTosses) {
+        this.tosses = numberOfTosses;
+    }
+    public StringBuilder getResults() {
+        return results;
+    }
+    public void runSimulation() {
+        Dice dice = new Dice(getNumberOfDice());
+        Bins bins = new Bins(6*getNumberOfDice());
 
-    public static void main(String args) {
-        Dice dice = new Dice();
-        Bins numOfBin = new Bins();
-        int sum = 0;
-
-        for (int i = 0; i < numOfTosses; i++) {
-            sum = dice.rollDice(numOfDice, 0);
-            ++numOfBin.bin[sum];
+        for (int i = 1; i <= this.tosses; i++) {
+            bins.addToBin(dice.tossAndSum());
         }
-
-        for (int i = 2; i < 13; i++) {
-            percentage = ((numOfBin.bin[i]) / numOfTosses);
-            stars = (((double) numOfBin.bin[i]) / numOfTosses) * 100;
-            System.out.println(numOfBin.bin[i]);
-            System.out.println("Bin " + i + ":\t" + numOfBin.bin[i] + ":\t" + percentage);
-            System.out.println("Bin " + i + ":\t" + numOfBin.bin[i] + ":\t" + percentage);
-            System.out.printf("%2d :\t%6d:\t%.2f ", i, numOfBin.bin[i], (double) numOfBin.bin[i] / numOfTosses);
-            System.out.println((((double) numOfBin.bin[i]) / numOfTosses)*100);
-            System.out.println((int)stars);
-
-            for (int j = 0; j < stars; j++) {
-                System.out.print("*");
-            }
-            System.out.println(" \n");
+        parseResults(bins);
+    }
+    public void clearResults() {
+        results = new StringBuilder();
+    }
+    public void parseResults(Bins bins) {
+        this.clearResults();
+        for (int i = getNumberOfDice(); i<= getNumberOfDice() * 6; i++) {
+            results.append(String.format("%2d :%9d: %4.2f %s\n", i, bins.getBin(i), (1.0 * bins.getBin(i)/getNumberOfTosses()),
+                    getStarsAsPercentage(1.0 * bins.getBin(i)/getNumberOfTosses())));
         }
+    }
+    public String getStarsAsPercentage(double percentage) {
+        StringBuilder stars = new StringBuilder();
+        int numStars = (int)(100*percentage);
+        for (int i = 1; i <= numStars; i++) stars.append("*");
+        return String.valueOf(stars);
+    }
+    public void printResults() {
+        System.out.println(results);
     }
 
 }

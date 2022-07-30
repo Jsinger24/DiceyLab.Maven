@@ -1,18 +1,17 @@
+
+import java.util.Random;
 public class Dice {
-    
-    public int numOfDice = 2;
-    int sum = 0;
-    private String currentRoll2;
 
-    public Integer rollDice(int numOfDice, int sum){
-        for(int i = 0; i < numOfDice; i++){
-            int currentRoll = (int) ((Math.random() * 6) + 1);
-            System.out.println("Roll is: " + currentRoll);
-            System.out.println("Roll is: " + currentRoll2);
-        }
-        return sum;
-
+    int numberOfDice;
+    Random generator = new Random();
+    public Dice(int numberOfDice) {
+        this.numberOfDice = numberOfDice;
     }
-
-
+    public Integer tossAndSum() {
+        int sumOfRoll = 0;
+        for (int i = 0; i < numberOfDice; i++) {
+            sumOfRoll += generator.nextInt(6) + 1;
+        }
+        return sumOfRoll;
+    }
 }
